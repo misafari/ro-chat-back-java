@@ -7,6 +7,8 @@ import com.safari.rochatback.entity.dto.UserRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -20,5 +22,9 @@ public class UserService {
 
     public Profile findProfile(String username) throws Exception { // todo change exception
         return profileRepository.findByUsername(username).orElseThrow(Exception::new);
+    }
+
+    public List<Profile> findAllProfile() {
+        return profileRepository.findAll();
     }
 }

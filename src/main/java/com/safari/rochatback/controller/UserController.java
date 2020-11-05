@@ -6,6 +6,8 @@ import com.safari.rochatback.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(UserController.ROOT_PATH)
 @RequiredArgsConstructor
@@ -21,5 +23,10 @@ public class UserController {
     @GetMapping("byUsername/{username}")
     public Profile getProfile(@PathVariable String username) throws Exception {
         return service.findProfile(username);
+    }
+
+    @GetMapping("profiles")
+    public List<Profile> getProfile() {
+        return service.findAllProfile();
     }
 }
