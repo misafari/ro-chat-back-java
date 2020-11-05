@@ -1,5 +1,6 @@
-package com.safari.rochatback.entity.user;
+package com.safari.rochatback.repository;
 
+import com.safari.rochatback.entity.Profile;
 import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.repository.query.Param;

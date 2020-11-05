@@ -1,9 +1,9 @@
 package com.safari.rochatback.service;
 
-import com.safari.rochatback.entity.user.Profile;
-import com.safari.rochatback.entity.user.ProfileRepository;
-import com.safari.rochatback.entity.user.UserRepository;
-import com.safari.rochatback.entity.user.dto.UserRegister;
+import com.safari.rochatback.entity.Profile;
+import com.safari.rochatback.repository.ProfileRepository;
+import com.safari.rochatback.repository.UserRepository;
+import com.safari.rochatback.entity.dto.UserRegister;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +18,7 @@ public class UserService {
         profileRepository.save(userRegister.getProfile());
     }
 
-    public Profile findProfile(String username) throws Exception {
-        return profileRepository.findByUsername(username)
-                .orElseThrow(Exception::new);
+    public Profile findProfile(String username) throws Exception { // todo change exception
+        return profileRepository.findByUsername(username).orElseThrow(Exception::new);
     }
 }

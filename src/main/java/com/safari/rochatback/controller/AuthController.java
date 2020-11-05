@@ -1,7 +1,7 @@
 package com.safari.rochatback.controller;
 
-import com.safari.rochatback.entity.user.dto.LoginRequest;
-import com.safari.rochatback.entity.user.dto.LoginResponse;
+import com.safari.rochatback.entity.dto.LoginRequest;
+import com.safari.rochatback.entity.dto.LoginResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

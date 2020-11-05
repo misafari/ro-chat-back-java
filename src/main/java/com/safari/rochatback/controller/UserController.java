@@ -1,7 +1,7 @@
 package com.safari.rochatback.controller;
 
-import com.safari.rochatback.entity.user.Profile;
-import com.safari.rochatback.entity.user.dto.UserRegister;
+import com.safari.rochatback.entity.Profile;
+import com.safari.rochatback.entity.dto.UserRegister;
 import com.safari.rochatback.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

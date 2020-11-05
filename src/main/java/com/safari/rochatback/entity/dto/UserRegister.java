@@ -1,7 +1,7 @@
-package com.safari.rochatback.entity.user.dto;
+package com.safari.rochatback.entity.dto;
 
-import com.safari.rochatback.entity.user.Profile;
-import com.safari.rochatback.entity.user.User;
+import com.safari.rochatback.entity.Profile;
+import com.safari.rochatback.entity.User;
 import lombok.Data;
 
 import javax.validation.constraints.Max;

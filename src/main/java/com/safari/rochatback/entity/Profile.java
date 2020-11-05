@@ -1,15 +1,18 @@
-package com.safari.rochatback.entity.user;
+package com.safari.rochatback.entity;
 
 import lombok.Data;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document
 @Data
-public class User {
+@Document
+public class Profile {
     @Id
     private ObjectId id;
     private String username;
-    private String password;
+    private String firstName;
+    private String surname;
+    private String avatar;
+    private String avatarBackGroundColor;
 }

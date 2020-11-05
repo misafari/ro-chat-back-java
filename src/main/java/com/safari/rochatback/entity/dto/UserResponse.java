@@ -1,4 +1,4 @@
-package com.safari.rochatback.entity.user.dto;
+package com.safari.rochatback.entity.dto;
 
 import lombok.Data;
 
