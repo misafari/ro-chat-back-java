@@ -1,10 +1,7 @@
 package com.safari.rochatback.controller;
 
 import com.safari.rochatback.entity.ChatMessage;
-import com.safari.rochatback.entity.ChatNotification;
-import com.safari.rochatback.exception.ResourceNotFoundException;
 import com.safari.rochatback.service.ChatMessageService;
-import com.safari.rochatback.service.ChatRoomService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
