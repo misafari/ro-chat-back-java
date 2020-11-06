@@ -1,40 +1,26 @@
 package com.safari.rochatback.configuration;
 
-import com.safari.rochatback.entity.ChatMessage;
-import com.safari.rochatback.entity.MessageStatus;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.context.event.EventListener;
-import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.stereotype.Component;
-import org.springframework.web.socket.messaging.SessionConnectedEvent;
-import org.springframework.web.socket.messaging.SessionDisconnectEvent;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.server.support.HttpSessionHandshakeInterceptor;
 
-@Component
-@RequiredArgsConstructor
-public class WebSocketEventListener {
-    private static final Logger logger = LoggerFactory.getLogger(WebSocketEventListener.class);
-    private final SimpMessageSendingOperations messagingTemplate;
+import java.util.Map;
 
-    @EventListener
-    public void handleWebSocketConnectListener(SessionConnectedEvent event) {
-        logger.info("Received a new web socket connection");
+@Slf4j
+public class WebSocketEventListener extends HttpSessionHandshakeInterceptor {
+
+    @Override
+    public boolean beforeHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Map<String, Object> attributes) throws Exception {
+        log.info("HandshakeInterceptor: beforeHandshake");
+        log.info("Attributes: " + attributes.toString());
+        return super.beforeHandshake(request, response, wsHandler, attributes);
     }
 
-//    @EventListener
-//    public void handleWebSocketDisconnectListener(SessionDisconnectEvent event) {
-//        StompHeaderAccessor headerAccessor = StompHeaderAccessor.wrap(event.getMessage());
-//
-//        String username = (String) headerAccessor.getSessionAttributes().get("username");
-//        if(username != null) {
-//            logger.info("User Disconnected : {0}", username);
-//
-//            ChatMessage chatMessage = new ChatMessage();
-//            chatMessage.setStatus(MessageStatus.DELIVERED);
-//            chatMessage.setRecipientId(username);
-//
-//            messagingTemplate.convertAndSend("/topic/public", chatMessage);
-//        }
-//    }
+    @Override
+    public void afterHandshake(ServerHttpRequest request, ServerHttpResponse response, WebSocketHandler wsHandler, Exception ex) {
+        log.info("HandshakeInterceptor: afterHandshake");
+        super.afterHandshake(request, response, wsHandler, ex);
+    }
 }

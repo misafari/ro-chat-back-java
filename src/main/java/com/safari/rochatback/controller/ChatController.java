@@ -15,10 +15,10 @@ public class ChatController {
     private final ChatMessageService chatMessageService;
 
     @MessageMapping("/chat")
-    public void processMessage(@Payload ChatMessage chatMessage) {
+    public void processMessage(ChatMessage chatMessage) {
 //        chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
 //                .ifPresentOrElse(chatMessage::setChatId, () -> new ResourceNotFoundException("Chat room not found"));
         ChatMessage saved = chatMessageService.save(chatMessage);
-        messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/queue/messages", saved);
+        messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/msg", saved);
     }
 }
