@@ -16,20 +16,12 @@ import org.springframework.stereotype.Controller;
 public class ChatController {
     private final SimpMessagingTemplate messagingTemplate;
     private final ChatMessageService chatMessageService;
-    private final ChatRoomService chatRoomService;
 
     @MessageMapping("/chat")
     public void processMessage(@Payload ChatMessage chatMessage) {
-        System.out.println("start processMessage called");
-        chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
-                .ifPresentOrElse(chatMessage::setChatId, () -> new ResourceNotFoundException("Chat room not found"));
-        System.out.println("processMessage called 1 : ");
-
+//        chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
+//                .ifPresentOrElse(chatMessage::setChatId, () -> new ResourceNotFoundException("Chat room not found"));
         ChatMessage saved = chatMessageService.save(chatMessage);
-
-        System.out.println("processMessage called 1 : " + saved);
-
         messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/queue/messages", saved);
-        System.out.println("end processMessage called");
     }
 }
