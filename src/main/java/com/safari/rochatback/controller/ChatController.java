@@ -19,17 +19,17 @@ public class ChatController {
     private final ChatRoomService chatRoomService;
 
     @MessageMapping("/chat")
-    public ChatMessage processMessage(@Payload ChatMessage chatMessage) {
+    public void processMessage(@Payload ChatMessage chatMessage) {
+        System.out.println("start processMessage called");
         chatRoomService.getChatId(chatMessage.getSenderId(), chatMessage.getRecipientId(), true)
                 .ifPresentOrElse(chatMessage::setChatId, () -> new ResourceNotFoundException("Chat room not found"));
+        System.out.println("processMessage called 1 : ");
 
         ChatMessage saved = chatMessageService.save(chatMessage);
 
-        messagingTemplate.convertAndSendToUser(
-                chatMessage.getRecipientId(), "/queue/notifications",
-                new ChatNotification(saved.getId(), saved.getSenderId(), saved.getSenderName()));
+        System.out.println("processMessage called 1 : " + saved);
 
         messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/queue/messages", saved);
-        return saved;
+        System.out.println("end processMessage called");
     }
 }
