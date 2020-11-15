@@ -6,39 +6,26 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class ChatRoomService {
-    private final ChatRoomRepository chatRoomRepository;
+    private final ChatRoomRepository repository;
 
-    public Optional<String> getChatId(String senderId, String recipientId, boolean createIfNotExist) {
-
-        return chatRoomRepository
-                .findBySenderIdAndRecipientId(senderId, recipientId)
+    public CompletableFuture<Optional<String>> getChatId(String chatId) {
+        return CompletableFuture.completedFuture(repository
+                .findByChatId(chatId)
                 .map(ChatRoom::getChatId)
                 .or(() -> {
-                    if(!createIfNotExist) return  Optional.empty();
-
-                    var chatId = String.format("%s_%s", senderId, recipientId);
-
-                    ChatRoom senderRecipient = ChatRoom
+                    ChatRoom chatRoom = ChatRoom
                             .builder()
                             .chatId(chatId)
-                            .senderId(senderId)
-                            .recipientId(recipientId)
                             .build();
 
-                    ChatRoom recipientSender = ChatRoom
-                            .builder()
-                            .chatId(chatId)
-                            .senderId(recipientId)
-                            .recipientId(senderId)
-                            .build();
-                    chatRoomRepository.save(senderRecipient);
-                    chatRoomRepository.save(recipientSender);
+                    repository.save(chatRoom);
 
                     return Optional.of(chatId);
-                });
+                }));
     }
 }

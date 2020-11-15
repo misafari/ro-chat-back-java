@@ -1,6 +1,7 @@
 package com.safari.rochatback.service;
 
 import com.safari.rochatback.entity.ChatMessage;
+import com.safari.rochatback.entity.ChatRoom;
 import com.safari.rochatback.entity.MessageStatus;
 import com.safari.rochatback.exception.ResourceNotFoundException;
 import com.safari.rochatback.repository.ChatMessageRepository;
@@ -11,20 +12,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @RequiredArgsConstructor
 public class ChatMessageService {
      private final ChatMessageRepository repository;
-     private final ChatRoomService chatRoomService;
     private final MongoOperations mongoOperations;
 
-    public ChatMessage save(ChatMessage chatMessage) {
+    public CompletableFuture<ChatMessage> save(ChatMessage chatMessage) {
         chatMessage.setStatus(MessageStatus.RECEIVED);
         repository.save(chatMessage);
-        return chatMessage;
+        return CompletableFuture.completedFuture(chatMessage);
     }
 
     public long countNewMessages(String senderId, String recipientId) {
@@ -32,17 +32,17 @@ public class ChatMessageService {
                 senderId, recipientId, MessageStatus.RECEIVED);
     }
 
-    public List<ChatMessage> findChatMessages(String senderId, String recipientId) {
-        var chatId = chatRoomService.getChatId(senderId, recipientId, false);
-
-        var messages = chatId.map(repository::findByChatId).orElse(new ArrayList<>());
-
-        if(!messages.isEmpty()) {
-            updateStatuses(senderId, recipientId, MessageStatus.DELIVERED);
-        }
-
-        return messages;
-    }
+//    public List<ChatMessage> findChatMessages(String chatId) {
+//        var chatId = chatRoomService.getChatId(chatId);
+//
+//        var messages = chatId.map(repository::findByChatId).orElse(new ArrayList<>());
+//
+//        if(!messages.isEmpty()) {
+//            updateStatuses(senderId, recipientId, MessageStatus.DELIVERED);
+//        }
+//
+//        return messages;
+//    }
 
     public ChatMessage findById(String id) {
         return repository
@@ -62,5 +62,13 @@ public class ChatMessageService {
                         .and("recipientId").is(recipientId));
         Update update = Update.update("status", status);
         mongoOperations.updateMulti(query, update, ChatMessage.class);
+    }
+
+    public List<ChatMessage> findAllByUsername(String username) {
+        return repository.findAllByRecipientId(username);
+    }
+
+    public List<ChatMessage> findAllByUsername(String username, Long timestamp) {
+        return repository.findAllByRecipientIdAndTimestampIsAfter(username, timestamp);
     }
 }

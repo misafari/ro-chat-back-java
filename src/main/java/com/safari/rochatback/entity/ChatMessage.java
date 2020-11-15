@@ -4,8 +4,6 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Date;
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -21,6 +19,6 @@ public class ChatMessage {
     private String senderName;
     private String recipientName;
     private String content;
-    private Date timestamp;
+    private Long timestamp;
     private MessageStatus status;
 }
