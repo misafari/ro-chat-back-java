@@ -17,6 +17,16 @@ public class MessageController {
     public static final String ROOT_PATH = "message";
     private final ChatMessageService service;
 
+    @GetMapping("getByChatId/{chatId}")
+    public List<ChatMessage> getAllByChatId(@PathVariable String chatId) {
+        return service.findAllByChatId(chatId);
+    }
+
+    @GetMapping("getByChatId/{chatId}/{timestamp}")
+    public List<ChatMessage> getAllByChatIdAndTimestampAfter(@PathVariable String chatId, @PathVariable Long timestamp) {
+        return service.findAllByChatIdAndTimestampAfter(chatId, timestamp);
+    }
+
     @GetMapping("/byUsername/{username}")
     public List<ChatMessage> getAll(@PathVariable String username) {
         return service.findAllByUsername(username);

@@ -12,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -23,26 +24,10 @@ public class ChatMessageService {
 
     public CompletableFuture<ChatMessage> save(ChatMessage chatMessage) {
         chatMessage.setStatus(MessageStatus.RECEIVED);
+        chatMessage.setTimestamp(new Date().getTime());
         repository.save(chatMessage);
         return CompletableFuture.completedFuture(chatMessage);
     }
-
-    public long countNewMessages(String senderId, String recipientId) {
-        return repository.countBySenderIdAndRecipientIdAndStatus(
-                senderId, recipientId, MessageStatus.RECEIVED);
-    }
-
-//    public List<ChatMessage> findChatMessages(String chatId) {
-//        var chatId = chatRoomService.getChatId(chatId);
-//
-//        var messages = chatId.map(repository::findByChatId).orElse(new ArrayList<>());
-//
-//        if(!messages.isEmpty()) {
-//            updateStatuses(senderId, recipientId, MessageStatus.DELIVERED);
-//        }
-//
-//        return messages;
-//    }
 
     public ChatMessage findById(String id) {
         return repository
@@ -70,5 +55,13 @@ public class ChatMessageService {
 
     public List<ChatMessage> findAllByUsername(String username, Long timestamp) {
         return repository.findAllByRecipientIdAndTimestampIsAfter(username, timestamp);
+    }
+
+    public List<ChatMessage> findAllByChatId(String chatId) {
+        return repository.findAllByChatId(chatId);
+    }
+
+    public List<ChatMessage> findAllByChatIdAndTimestampAfter(String chatId, Long timestamp) {
+        return repository.findAllByChatIdAndTimestampAfter(chatId, timestamp);
     }
 }
