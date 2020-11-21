@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +22,14 @@ public class UserChatRoomService {
                         .or(() -> Optional.of(repository.save(new UserChatRoom(chatId, username)).getId())));
     }
 
-    public List<UserChatRoom> findAllByUsername(String username) {
-        return repository.findAllByUsername(username);
+    public List<String> findAllByUsername(String username) {
+        return repository.findAllByUsername(username)
+                .stream().map(UserChatRoom::getChatId)
+                .collect(Collectors.toList());
+    }
+
+    public void delete(String username, String chatId) {
+        repository.findByChatIdAndUsername(username, chatId)
+                .ifPresent(repository::delete);
     }
 }

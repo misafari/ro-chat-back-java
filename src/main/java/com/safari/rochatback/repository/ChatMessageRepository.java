@@ -13,4 +13,5 @@ public interface ChatMessageRepository extends MongoRepository<ChatMessage, Stri
     List<ChatMessage> findAllByRecipientIdAndTimestampIsAfter(String username, Long timestamp);
     List<ChatMessage> findAllByChatId(String chatId);
     List<ChatMessage> findAllByChatIdAndTimestampAfter(String chatId, Long timestamp);
+    List<ChatMessage> findAllByChatIdInAndTimestampAfter(List<String> chatIds, Long timestamp);
 }

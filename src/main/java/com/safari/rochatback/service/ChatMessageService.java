@@ -1,8 +1,8 @@
 package com.safari.rochatback.service;
 
 import com.safari.rochatback.entity.ChatMessage;
-import com.safari.rochatback.entity.ChatRoom;
 import com.safari.rochatback.entity.MessageStatus;
+import com.safari.rochatback.entity.dto.ChatMessageRequest;
 import com.safari.rochatback.exception.ResourceNotFoundException;
 import com.safari.rochatback.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
@@ -63,5 +63,9 @@ public class ChatMessageService {
 
     public List<ChatMessage> findAllByChatIdAndTimestampAfter(String chatId, Long timestamp) {
         return repository.findAllByChatIdAndTimestampAfter(chatId, timestamp);
+    }
+
+    public List<ChatMessage> findAllByChatIdsAndTimestampAfter(ChatMessageRequest request) {
+        return repository.findAllByChatIdInAndTimestampAfter(request.getChatIds(), request.getTimestamp());
     }
 }

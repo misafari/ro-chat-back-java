@@ -1,13 +1,12 @@
 package com.safari.rochatback.controller;
 
 import com.safari.rochatback.entity.ChatMessage;
+import com.safari.rochatback.entity.dto.ChatMessageRequest;
 import com.safari.rochatback.service.ChatMessageService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -25,6 +24,11 @@ public class MessageController {
     @GetMapping("getByChatId/{chatId}/{timestamp}")
     public List<ChatMessage> getAllByChatIdAndTimestampAfter(@PathVariable String chatId, @PathVariable Long timestamp) {
         return service.findAllByChatIdAndTimestampAfter(chatId, timestamp);
+    }
+
+    @PostMapping("getByChatIds")
+    public List<ChatMessage> findAllByChatIdsAndTimestamp(@Valid @RequestBody ChatMessageRequest request) {
+        return service.findAllByChatIdsAndTimestampAfter(request);
     }
 
     @GetMapping("/byUsername/{username}")
