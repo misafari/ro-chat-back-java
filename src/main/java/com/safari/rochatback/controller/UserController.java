@@ -16,8 +16,9 @@ public class UserController {
     private final UserService service;
 
     @PostMapping
-    public void save(@RequestBody UserRegister userRegister) {
+    public String save(@RequestBody UserRegister userRegister) {
         service.save(userRegister);
+        return "dawihdoawhdfouabfiawdaowu4128037423hflasebnfsebawf2"; // todo generate
     }
 
     @GetMapping("byUsername/{username}")
