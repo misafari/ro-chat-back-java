@@ -19,7 +19,7 @@ public class UserChatRoomService {
         return CompletableFuture.completedFuture(
                 repository.findByChatIdAndUsername(chatId, username)
                         .map(UserChatRoom::getId)
-                        .or(() -> Optional.of(repository.save(new UserChatRoom(chatId, username)).getId())));
+                        .or(() -> Optional.of(repository.save(new UserChatRoom(username, chatId)).getId())));
     }
 
     public List<String> findAllByUsername(String username) {
