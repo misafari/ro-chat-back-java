@@ -33,7 +33,9 @@ public class ChatController {
                     userChatRoomService.addUserChatRoom(chatMessage.getChatId(), chatMessage.getRecipientId());
 
             CompletableFuture.allOf(chatRoom, saveMessage, addSenderChatRoom, addRecipientChatRoom).join();
+
             messagingTemplate.convertAndSendToUser(chatMessage.getRecipientId(), "/msg", saveMessage.get());
+            messagingTemplate.convertAndSendToUser(chatMessage.getSenderId(), "/msg", saveMessage.get());
         } catch (InterruptedException e) {
             // todo do something
             e.printStackTrace();
